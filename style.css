@@ -821,3 +821,421 @@ a[href="why.html"]:hover {
     background-color: #4CAF50;
     color: white;
 }
+/* Основные исправления для мобильных устройств */
+@media (max-width: 768px) {
+    /* Общие исправления */
+    body {
+        font-size: 14px;
+        overflow-x: hidden;
+    }
+    
+    /* Уменьшаем основную кнопку */
+    #button {
+        width: 180px;
+        height: 180px;
+        margin: 20px auto;
+        position: relative;
+        z-index: 10;
+    }
+    
+    /* Фиксируем header */
+    header {
+        height: 60px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 5px;
+        flex-wrap: nowrap;
+    }
+    
+    header div {
+        margin: 2px 5px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    
+    /* Основной контент с отступом под header */
+    main {
+        min-height: calc(100vh - 280px);
+        padding-top: 70px;
+        padding-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Слот силы на мобильных */
+    .power-slot {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        margin: 0 auto 20px;
+        width: 80px;
+        height: 80px;
+        order: -1; /* Перемещаем выше кнопки */
+    }
+    
+    /* Панели магазина, инвентаря, сил и "Другое" */
+    #shop-panel,
+    #inventory-panel,
+    #powers-panel,
+    #other-panel {
+        width: 90vw;
+        max-width: 350px;
+        height: 80vh;
+        top: 10vh;
+        left: 5vw;
+        transform: none;
+        border-radius: 15px;
+        padding: 15px;
+    }
+    
+    #shop-panel {
+        right: -100%;
+        left: auto;
+    }
+    
+    #shop-panel.active {
+        right: 5vw;
+    }
+    
+    #powers-panel,
+    #other-panel {
+        left: -100%;
+    }
+    
+    #powers-panel.active,
+    #other-panel.active {
+        left: 5vw;
+    }
+    
+    /* Исправляем кнопки интерфейса */
+    .interface-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .interface-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        min-width: 140px;
+        margin: 3px;
+    }
+    
+    /* Текст обновлений */
+    .update-content {
+        padding: 15px;
+        font-size: 14px;
+    }
+    
+    .update-content h1 {
+        font-size: 18px;
+    }
+    
+    /* Секция информации */
+    .info-section {
+        padding: 20px 10px;
+    }
+    
+    /* Видео секция */
+    .videos-section {
+        padding: 20px 10px;
+    }
+    
+    .video-container {
+        margin: 15px auto;
+    }
+    
+    .video-container iframe {
+        height: 200px;
+    }
+    
+    /* Табы в панелях */
+    .shop-tabs,
+    .powers-tabs,
+    .other-tabs {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
+    }
+    
+    .shop-tab,
+    .powers-tab,
+    .other-tab {
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    
+    /* Контент в панелях с прокруткой */
+    .shop-content,
+    .powers-content,
+    .other-content {
+        max-height: 60vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 5px;
+    }
+    
+    /* Улучшения и предметы */
+    .upgrade-item {
+        padding: 12px;
+        margin: 8px 0;
+        font-size: 12px;
+        border-radius: 15px;
+    }
+    
+    /* Инвентарь скинов */
+    .skins-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .skin-item {
+        padding: 10px;
+        min-height: 100px;
+    }
+    
+    .skin-item img {
+        height: 60px;
+    }
+    
+    /* Силы растений */
+    .powers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .power-item {
+        padding: 10px;
+        min-height: 100px;
+    }
+    
+    .power-item img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    /* Достижения */
+    .upgrade-item .IMG-1 {
+        width: 60px;
+        height: 60px;
+    }
+    
+    /* Форма кодов */
+    #comment-form textarea {
+        width: 100%;
+        font-size: 16px; /* Увеличиваем для iOS */
+        padding: 10px;
+    }
+    
+    #comment-form button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    /* Уровень и опыт */
+    .level-info {
+        min-width: 120px;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+    
+    #level-bar {
+        width: 120px;
+    }
+    
+    /* Уведомления */
+    .notification {
+        top: 70px;
+        right: 10px;
+        left: 10px;
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    /* Кнопка закрытия в панелях */
+    .close-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+    
+    /* Ссылки внизу */
+    a[href="about.html"], 
+    a[href="why.html"] {
+        margin: 10px auto;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    /* Амулет */
+    .amulet-btn {
+        padding: 15px;
+        font-size: 16px;
+    }
+}
+
+/* Дополнительные исправления для очень маленьких экранов */
+@media (max-width: 480px) {
+    header {
+        height: 50px;
+        font-size: 11px;
+    }
+    
+    header div {
+        margin: 1px 3px;
+        font-size: 11px;
+    }
+    
+    #button {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .interface-btn {
+        min-width: 120px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .power-slot {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .skins-grid,
+    .powers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .update-content h1 {
+        font-size: 16px;
+    }
+    
+    .shop-tab,
+    .powers-tab,
+    .other-tab {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+/* Исправления для iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    /* iOS specific styles */
+    .shop-content,
+    .powers-content,
+    .other-content {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Улучшаем touch targets */
+    button,
+    .upgrade-item,
+    .skin-item,
+    .power-item {
+        min-height: 44px; /* Минимальная высота для touch на iOS */
+    }
+    
+    /* Убираем выделение при tap */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* Исправления для Android */
+@media (-webkit-min-device-pixel-ratio: 2) {
+    /* Улучшаем четкость текста */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Улучшаем скроллинг на всех устройствах */
+.shop-content,
+.powers-content,
+.other-content,
+#skins-container,
+#powers-container {
+    scrollbar-width: thin;
+    scrollbar-color: #4CAF50 #f0f0f0;
+}
+
+.shop-content::-webkit-scrollbar,
+.powers-content::-webkit-scrollbar,
+.other-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.shop-content::-webkit-scrollbar-track,
+.powers-content::-webkit-scrollbar-track,
+.other-content::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+.shop-content::-webkit-scrollbar-thumb,
+.powers-content::-webkit-scrollbar-thumb,
+.other-content::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 3px;
+}
+
+/* Улучшаем взаимодействие с кнопками на мобильных */
+button,
+.upgrade-item,
+.skin-item,
+.power-item,
+.interface-btn {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+/* Анимация для мобильных панелей */
+#shop-panel,
+#powers-panel,
+#other-panel,
+#inventory-panel {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Увеличиваем зону клика для маленьких элементов на мобильных */
+@media (max-width: 768px) {
+    .level-requirement,
+    small {
+        font-size: 10px;
+        line-height: 1.3;
+    }
+    
+    /* Улучшаем отображение цен */
+    .upgrade-item span {
+        font-size: 13px;
+        font-weight: bold;
+    }
+    
+    /* Делаем кнопки магазина более доступными */
+    .shop-tab.active,
+    .powers-tab.active,
+    .other-tab.active {
+        border-bottom: 3px solid #4CAF50;
+    }
+}
