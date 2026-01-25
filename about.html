@@ -1,0 +1,86 @@
+<html>
+  <body>
+    <h1>My World</h1>
+    <button id="b">ТЕСТОВАЯ КНОПКА</button>
+    <p id="p">0</p>
+    <button id="upgrade">250 = +2 клик</button>
+    <button id="upgrade2">2000 = +10 клик</button>
+     <button id="upgrade3">2350 = +100 клик</button>
+    <p>ПОЖАЛУЕСТА! не вытайтесь добиться 20000</p>
+    <script>
+      const button = document.getElementById('b');
+      const text = document.getElementById('p');
+      const up = document.getElementById('upgrade');
+      const up2 = document.getElementById('upgrade2');
+      const up3 = document.getElementById('upgrade3');
+
+      let score = 0;
+      let addClick = 1;
+      let constup = 250;
+      let constup2 = 2000;
+      let constup3 = 2350;
+      let give = 2;
+      let give2 = 10;
+      let give3 = 100;
+
+      // Основная функция клика
+      function handleClick() {
+        score += addClick;
+        
+        if (score < 20000) {
+          text.textContent = "Счёт: " + score;
+        } else if (score < 22000) {
+          text.textContent = "ты видишь этот мир? " + score;
+        } else if (score < 25000) {
+          text.textContent = "это всё.... 25000? то-есть это ты? " + score;
+        } else if (score < 28000) {
+          text.textContent = "28000? ты помнишь меня? ты знаешь меня? " + score;
+        } else if (score < 30000) {
+          text.textContent = "30000? ты забыл меня... я уверен " + score;
+        } else {
+          text.textContent = "разве этот мир ты познал? ладно... запомни: 1057 " + score;
+        }
+      }
+
+      // Функция улучшения 1
+      function addclickuog() {
+        if (score >= constup) {
+          addClick += give; // Увеличиваем силу клика, а не сам счёт
+          score -= constup; // Вычитаем ценность улучшения
+          constup = Math.floor(constup * 1.5); // Увеличиваем цену для следующего улучшения
+          text.textContent = "Счёт: " + score;
+          up.textContent = Math.floor(constup) + " = +2 клик";
+          up.disabled = true; // Отключаем кнопку после покупки
+        }
+      }
+
+      // Функция улучшения 2
+      function addclickuog2() {
+        if (score >= constup2) {
+          addClick += give2;
+          score -= constup2;
+          constup2 = Math.floor(constup2 * 1.5);
+          text.textContent = "Счёт: " + score;
+          up2.textContent = Math.floor(constup2) + " = +10 клик";
+          up2.disabled = true;
+        }
+      }
+         function addclickuog3() {
+        if (score >= constup3) {
+          addClick += give3;
+          score -= constup3;
+          constup2 = Math.floor(constup3 * 1.5);
+          text.textContent = "Счёт: " + score;
+          up2.textContent = Math.floor(constup3) + " = +100 клик";
+          up2.disabled = true;
+        }
+      }
+
+      // Назначаем обработчики событий ПРАВИЛЬНО
+      button.addEventListener('click', handleClick);
+      up.addEventListener('click', addclickuog);
+      up2.addEventListener('click', addclickuog2);
+        up3.addEventListener('click', addclickuog3);
+    </script>
+  </body>
+</html>
