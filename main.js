@@ -15,7 +15,7 @@ let gameStartTime = Date.now();
 // Коды, которые уже были использованы - КАЖДЫЙ КОД МОЖНО ИСПОЛЬЗОВАТЬ ТОЛЬКО ОДИН РАЗ
 let usedCodes = [];
 
-// Система достижений - исправленная структура
+// Система достижений
 let unlockedAchievements = {
     click1: false,
     click10: false,
@@ -314,7 +314,7 @@ const powers = {
     }
 };
 
-// Текста для меняющихся слов
+// Текста для меняющихся слов (сокращено для экономии места)
 const changingTexts = [
     "Кликай быстрее!",
     "привет", 
@@ -458,9 +458,68 @@ const equippedPowerEl = document.getElementById('equipped-power');
 const powersContainer = document.getElementById('powers-container');
 const amuletPriceEl = document.getElementById('amulet-price');
 
-// ==================== ИСПРАВЛЕННАЯ СИСТЕМА КОДОВ ====================
-// Теперь каждый код можно использовать ТОЛЬКО ОДИН РАЗ за всю игру
+// ==================== ФУНКЦИИ ДЛЯ МОБИЛЬНЫХ ====================
 
+// Определение мобильного устройства
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768;
+}
+
+// Инициализация свайпов для мобильных
+function initMobileSwipe() {
+    if (!isMobileDevice()) return;
+    
+    let startX = 0;
+    let startY = 0;
+    let startTime = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        startTime = Date.now();
+    }, { passive: true });
+    
+    document.addEventListener('touchend', function(e) {
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const endTime = Date.now();
+        
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+        const timeDiff = endTime - startTime;
+        
+        // Быстрый свайп (менее 300мс)
+        if (timeDiff < 300) {
+            // Свайп вправо для закрытия
+            if (diffX < -50 && Math.abs(diffX) > Math.abs(diffY)) {
+                closeAllPanels();
+            }
+        }
+    }, { passive: true });
+}
+
+// Адаптация интерфейса для мобильных
+function adaptForMobile() {
+    if (isMobileDevice()) {
+        // Добавляем класс для мобильных
+        document.body.classList.add('mobile-device');
+        
+        // Увеличиваем touch-зоны
+        document.querySelectorAll('button, .upgrade-item, .interface-btn').forEach(btn => {
+            btn.style.minHeight = '44px';
+        });
+        
+        // Улучшаем скроллинг
+        document.querySelectorAll('.shop-content, .powers-content, .other-content').forEach(el => {
+            el.style.webkitOverflowScrolling = 'touch';
+        });
+    }
+}
+
+// ==================== ОСНОВНЫЕ ФУНКЦИИ ИГРЫ ====================
+
+// Функция активации кодов (только один раз)
 function activateCode(code) {
     const codeElement = document.getElementById('code-result');
     code = code.trim().toUpperCase();
@@ -468,14 +527,13 @@ function activateCode(code) {
     // Проверяем, был ли код уже использован
     if (usedCodes.includes(code)) {
         codeElement.style.color = '#e74c3c';
-        codeElement.textContent = "❌ Этот код уже был использован! Код можно использовать только один раз.";
+        codeElement.textContent = "❌ Этот код уже был использован!";
         return false;
     }
     
     let success = false;
     let message = '';
     
-    // Обработка кодов - КАЖДЫЙ МОЖНО ИСПОЛЬЗОВАТЬ ТОЛЬКО ОДИН РАЗ
     switch(code) {
         case "HI":
             success = true;
@@ -509,15 +567,10 @@ function activateCode(code) {
             message = "✅ Код IAMSTEVE активирован! +15,000 капель";
             break;
         case "1057":
-            // Проверяем, не получал ли уже игрок этот скин
             if (unlockedSkins.includes('memories_1057')) {
                 message = "❌ Вы уже получили скин 'ВОСПОМИНАНИЯ'!";
                 success = false;
-            } else if (unlockedAchievements.memoriesUnlocked) {
-                message = "❌ Код 1057 уже был использован!";
-                success = false;
             } else {
-                // Добавляем скин ВОСПОМИНАНИЯ
                 skins['memories_1057'] = {
                     name: 'ВОСПОМИНАНИЯ',
                     url: 'https://art.pixilart.com/80614900900a5df.gif',
@@ -530,41 +583,33 @@ function activateCode(code) {
                 sunScore += 10;
                 message = "🎉🎉🎉 Секретный код 1057 активирован! Получен скин 'ВОСПОМИНАНИЯ' +55,555 капель и +10 солнц";
                 
-                // Загружаем скины заново
                 loadSkins();
                 
-                // Показываем скрытую ссылку
                 const link = document.getElementById('LINK');
                 if (link) {
                     link.style.opacity = '1';
                     link.style.position = 'static';
                     link.style.top = 'auto';
+                    link.style.color = '#ff0000';
+                    link.style.fontWeight = 'bold';
+                    link.style.margin = '20px';
+                    link.style.display = 'block';
+                    link.style.textAlign = 'center';
+                    link.style.textDecoration = 'underline';
                 }
                 
-                // Обновляем достижения
                 checkAchievements();
             }
             success = true;
             break;
-        case "":
-            message = "❌ Введите код!";
-            success = false;
-            break;
         default:
             message = "❌ Неверный код!";
-            success = false;
     }
     
     if (success) {
-        // Добавляем код в использованные (ТОЛЬКО ЕСЛИ УСПЕШНО АКТИВИРОВАН)
         usedCodes.push(code);
-        
-        // Обновляем отображение
         updateDisplay();
-        
-        // Сохраняем игру
         saveGame();
-        
         codeElement.style.color = '#2ecc71';
     } else {
         codeElement.style.color = '#e74c3c';
@@ -574,10 +619,8 @@ function activateCode(code) {
     return success;
 }
 
-// ==================== ФУНКЦИЯ ПРОВЕРКИ ДОСТИЖЕНИЙ ====================
-
+// Проверка достижений
 function checkAchievements() {
-    // Проверяем достижения за клики
     if (!unlockedAchievements.click1 && totalClicks >= 1) {
         unlockedAchievements.click1 = true;
         score += 1;
@@ -639,10 +682,9 @@ function checkAchievements() {
         saveGame();
     }
     
-    // Достижение за 15 минут игры
     if (!unlockedAchievements.play15min && gameStartTime) {
         const playTime = Date.now() - gameStartTime;
-        if (playTime >= 15 * 60 * 1000) { // 15 минут
+        if (playTime >= 15 * 60 * 1000) {
             unlockedAchievements.play15min = true;
             score += 15000;
             sunScore += 15;
@@ -654,7 +696,6 @@ function checkAchievements() {
         }
     }
     
-    // Проверяем достижения за уровень
     if (!unlockedAchievements.level10 && level >= 10) {
         unlockedAchievements.level10 = true;
         sunScore += 20;
@@ -685,7 +726,6 @@ function checkAchievements() {
         saveGame();
     }
     
-    // Достижение "Помни..."
     if (!unlockedAchievements.memories && unlockedAchievements.memoriesUnlocked) {
         unlockedAchievements.memories = true;
         showNotification("Ты вспомнил...");
@@ -695,7 +735,7 @@ function checkAchievements() {
     }
 }
 
-// Восстановление статуса достижений при загрузке
+// Восстановление статуса достижений
 function restoreAchievementsStatus() {
     for (let i = 1; i <= 11; i++) {
         const giftElement = document.getElementById(`gift-${i}`);
@@ -705,7 +745,6 @@ function restoreAchievementsStatus() {
         }
     }
     
-    // Восстанавливаем полученные достижения
     if (unlockedAchievements.click1) {
         document.getElementById('gift-1').textContent = "Получено!";
         document.getElementById('gift-1').style.color = "#2ecc71";
@@ -771,7 +810,7 @@ function saveGame() {
         unlockedAchievements: unlockedAchievements,
         activeBoosts: activeBoosts,
         priceMultipliers: priceMultipliers,
-        usedCodes: usedCodes, // Сохраняем использованные коды
+        usedCodes: usedCodes,
         gameStartTime: gameStartTime,
         amuletPrice: amuletPrice,
         unlockedPowers: unlockedPowers,
@@ -800,7 +839,7 @@ function loadGame() {
             casePrice = gameData.casePrice || 1250;
             sunScore = gameData.sunScore || 0;
             sunPerClick = gameData.sunPerClick || 0.01;
-            usedCodes = gameData.usedCodes || []; // Загружаем использованные коды
+            usedCodes = gameData.usedCodes || [];
             gameStartTime = gameData.gameStartTime || Date.now();
             
             unlockedAchievements = gameData.unlockedAchievements || {
@@ -825,7 +864,7 @@ function loadGame() {
             
             unlockedSkins = gameData.unlockedSkins || ['default'];
             
-            // Сохраняем темные скины из старой системы
+            // Сохраняем темные скины
             const allDarkSkins = Object.keys(darkSkins);
             allDarkSkins.forEach(skinId => {
                 if (gameData.unlockedSkins && gameData.unlockedSkins.includes(skinId) && !unlockedSkins.includes(skinId)) {
@@ -846,7 +885,7 @@ function loadGame() {
             equippedPower = gameData.equippedPower || null;
             powerEffects = gameData.powerEffects || {};
             
-            // Проверяем, есть ли скин ВОСПОМИНАНИЯ
+            // Проверяем скин ВОСПОМИНАНИЯ
             if (unlockedAchievements.memoriesUnlocked && !unlockedSkins.includes('memories_1057')) {
                 skins['memories_1057'] = {
                     name: 'ВОСПОМИНАНИЯ',
@@ -866,9 +905,17 @@ function loadGame() {
     return false;
 }
 
-// Остальные функции остаются БЕЗ ИЗМЕНЕНИЙ...
+// Меняющиеся фразы
+function startChangingText() {
+    let currentIndex = 0;
+    changingTextEl.textContent = changingTexts[currentIndex];
+    
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % changingTexts.length;
+        changingTextEl.textContent = changingTexts[currentIndex];
+    }, 7000);
+}
 
-// Быстрая смена фразы по клику
 function initChangingTextClick() {
     if (changingTextEl) {
         changingTextEl.style.cursor = 'pointer';
@@ -887,18 +934,7 @@ function showNextText() {
     }, 200);
 }
 
-// Функция меняющихся текстов
-function startChangingText() {
-    let currentIndex = 0;
-    changingTextEl.textContent = changingTexts[currentIndex];
-    
-    setInterval(() => {
-        currentIndex = (currentIndex + 1) % changingTexts.length;
-        changingTextEl.textContent = changingTexts[currentIndex];
-    }, 7000);
-}
-
-// Оптимизированный обработчик клика
+// Основной обработчик клика
 function setupButton() {
     let isPressed = false;
     let clickCount = 0;
@@ -994,7 +1030,7 @@ function setupButton() {
         }
     });
     
-    // Автокликер с оптимизацией
+    // Автокликер
     let lastUpdate = 0;
     function gameLoop(timestamp) {
         if (timestamp - lastUpdate > 1000) {
@@ -1019,7 +1055,7 @@ function setupButton() {
     requestAnimationFrame(gameLoop);
 }
 
-// Покупка улучшения клика
+// Покупка улучшения
 function buyUpgrade(power, basePrice, requiredLevel = 1) {
     const upgradeKey = `upgrade_${power}_${basePrice}`;
     const currentMultiplier = priceMultipliers.upgrades[upgradeKey] || 1;
@@ -1293,7 +1329,7 @@ function buyPowerCase() {
     saveGame();
 }
 
-// Покупка амулета для СИЛ
+// Покупка амулета
 function buyAmulet() {
     if (score < amuletPrice) {
         showNotification("Недостаточно капель!");
@@ -1509,7 +1545,7 @@ function removePowerEffect(powerId) {
     updatePowerEffects();
 }
 
-// Периодические бонусы от Сил
+// Периодические бонусы
 function startPeriodicDrops(power) {
     powerIntervals.periodicDrops = setInterval(() => {
         const bonus = Math.round(score * power.value);
@@ -1549,7 +1585,6 @@ function startUltimateEffects(power) {
     }, power.sunInterval);
 }
 
-// Обновление эффектов Сил
 function updatePowerEffects() {
     updateDisplay();
     checkUpgradesAvailability();
@@ -1670,6 +1705,15 @@ function checkUpgradesAvailability() {
             button.style.background = 'lightblue';
             button.style.cursor = 'pointer';
             button.style.opacity = '1';
+            
+            // На мобильных
+            if (isMobileDevice()) {
+                button.style.minHeight = '50px';
+                button.style.display = 'flex';
+                button.style.flexDirection = 'column';
+                button.style.justifyContent = 'center';
+                button.style.alignItems = 'center';
+            }
         } else {
             button.disabled = true;
             button.style.background = '#7f8c8d';
@@ -1732,6 +1776,12 @@ function loadSkins() {
                 <small>${skin.rarity}</small>
             `;
             
+            // На мобильных
+            if (isMobileDevice()) {
+                skinItem.style.minHeight = '120px';
+                skinItem.style.padding = '10px';
+            }
+            
             skinsContainer.appendChild(skinItem);
         }
     });
@@ -1791,12 +1841,23 @@ function selectSkin(skinId) {
     }
 }
 
-// Показать уведомление
+// Уведомление
 function showNotification(message) {
     if (!notification) return;
     
     notification.textContent = message;
     notification.classList.add('show');
+    
+    // Адаптация для мобильных
+    if (isMobileDevice()) {
+        notification.style.fontSize = '14px';
+        notification.style.padding = '12px';
+        notification.style.borderRadius = '8px';
+        notification.style.maxWidth = 'calc(100vw - 40px)';
+        notification.style.left = '20px';
+        notification.style.right = '20px';
+        notification.style.margin = '0 auto';
+    }
     
     setTimeout(() => {
         notification.classList.remove('show');
@@ -1848,53 +1909,32 @@ function startBoostChecker() {
     }, 1000);
 }
 
-// Управление панелью "Другое"
-function toggleOther() {
-    const otherPanel = document.getElementById('other-panel');
-    const overlay = document.getElementById('overlay');
-    
-    if (otherPanel && overlay) {
-        otherPanel.classList.toggle('active');
-        overlay.classList.toggle('active');
-        mainContent.classList.toggle('other-open');
-    }
-}
+// ==================== УПРАВЛЕНИЕ ПАНЕЛЯМИ ====================
 
-function closeOther() {
-    const otherPanel = document.getElementById('other-panel');
-    const overlay = document.getElementById('overlay');
-    
-    if (otherPanel && overlay) {
-        otherPanel.classList.remove('active');
-        overlay.classList.remove('active');
-        mainContent.classList.remove('other-open');
-    }
-}
-
-function openOtherTab(tabName) {
-    document.querySelectorAll('.other-content').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    document.querySelectorAll('.other-tab').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    
-    const tabElement = document.getElementById(`${tabName}-tab`);
-    if (tabElement) {
-        tabElement.classList.add('active');
-    }
-    event.target.classList.add('active');
-}
-
-// Управление панелями
+// Магазин
 function toggleShop() {
     const shopPanel = document.getElementById('shop-panel');
     const overlay = document.getElementById('overlay');
+    
+    if (isMobileDevice()) {
+        shopPanel.style.transition = 'right 0.3s ease-out';
+    }
+    
     if (shopPanel && overlay) {
         shopPanel.classList.toggle('active');
         overlay.classList.toggle('active');
         mainContent.classList.toggle('shop-open');
         checkUpgradesAvailability();
+        
+        // На мобильных фокусируемся на первой вкладке
+        if (isMobileDevice() && shopPanel.classList.contains('active')) {
+            setTimeout(() => {
+                const firstTab = document.querySelector('.shop-tab.active');
+                if (firstTab) {
+                    firstTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 100);
+        }
     }
 }
 
@@ -1908,6 +1948,7 @@ function closeShop() {
     }
 }
 
+// Инвентарь
 function toggleInventory() {
     const inventoryPanel = document.getElementById('inventory-panel');
     const overlay = document.getElementById('overlay');
@@ -1926,9 +1967,15 @@ function closeInventory() {
     }
 }
 
+// Силы
 function togglePowers() {
     const powersPanel = document.getElementById('powers-panel');
     const overlay = document.getElementById('overlay');
+    
+    if (isMobileDevice()) {
+        powersPanel.style.transition = 'left 0.3s ease-out';
+    }
+    
     if (powersPanel && overlay) {
         powersPanel.classList.toggle('active');
         overlay.classList.toggle('active');
@@ -1946,6 +1993,33 @@ function closePowers() {
     }
 }
 
+// Другое
+function toggleOther() {
+    const otherPanel = document.getElementById('other-panel');
+    const overlay = document.getElementById('overlay');
+    
+    if (isMobileDevice()) {
+        otherPanel.style.transition = 'right 0.3s ease-out';
+    }
+    
+    if (otherPanel && overlay) {
+        otherPanel.classList.toggle('active');
+        overlay.classList.toggle('active');
+        mainContent.classList.toggle('other-open');
+    }
+}
+
+function closeOther() {
+    const otherPanel = document.getElementById('other-panel');
+    const overlay = document.getElementById('overlay');
+    if (otherPanel && overlay) {
+        otherPanel.classList.remove('active');
+        overlay.classList.remove('active');
+        mainContent.classList.remove('other-open');
+    }
+}
+
+// Закрыть все панели
 function closeAllPanels() {
     closeShop();
     closeInventory();
@@ -1953,6 +2027,7 @@ function closeAllPanels() {
     closeOther();
 }
 
+// Открытие табов
 function openShopTab(tabName) {
     document.querySelectorAll('.shop-content').forEach(tab => {
         tab.classList.remove('active');
@@ -1988,7 +2063,23 @@ function openPowersTab(tabName) {
     }
 }
 
-// Инициализация игры
+function openOtherTab(tabName) {
+    document.querySelectorAll('.other-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.other-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    const tabElement = document.getElementById(`${tabName}-tab`);
+    if (tabElement) {
+        tabElement.classList.add('active');
+    }
+    event.target.classList.add('active');
+}
+
+// ==================== ИНИЦИАЛИЗАЦИЯ ИГРЫ ====================
+
 function initGame() {
     loadGame();
     updateDisplay();
@@ -2003,6 +2094,8 @@ function initGame() {
     checkUpgradesAvailability();
     startBoostChecker();
     restoreAchievementsStatus();
+    initMobileSwipe();
+    adaptForMobile();
     
     // Восстанавливаем экипированную силу
     if (equippedPower && powers[equippedPower]) {
@@ -2018,10 +2111,7 @@ function initGame() {
         buttonEl.style.backgroundImage = `url(${allSkins[currentSkin].url})`;
     }
     
-    // Проверяем достижения при запуске
-    checkAchievements();
-    
-    // Инициализируем форму комментариев для кодов
+    // Инициализируем форму кодов
     const commentForm = document.getElementById('comment-form');
     if (commentForm) {
         commentForm.addEventListener('submit', function(e) {
@@ -2041,6 +2131,14 @@ function initGame() {
 setInterval(() => {
     saveGame();
 }, 30000);
+
+// Обработка изменения ориентации
+window.addEventListener('orientationchange', function() {
+    setTimeout(() => {
+        checkUpgradesAvailability();
+        updateDisplay();
+    }, 300);
+});
 
 // Запуск игры
 window.addEventListener('load', initGame);
