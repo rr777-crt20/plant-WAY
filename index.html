@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <audio id="clickSound1" src="sounds/click1.mp3" preload="auto"></audio>
+    <audio id="clickSound2" src="sounds/click2.mp3" preload="auto"></audio>
+    <audio id="clickSound3" src="sounds/click3.mp3" preload="auto"></audio>
+    <audio id="clickSound4" src="sounds/click4.mp3" preload="auto"></audio>
+    
     <div class="main-content" id="main-content">
         <header>
             <div class="menu">
@@ -35,13 +40,15 @@
 
         <div class="update-section">
             <div class="update-content">
-                <h1>ОБНОВЛЕНИЕ 1.0.9 - это просто тест</h1>
-                <p>- 2 новых улучшений</p>
-                <p>- обычное поведение</p>
-                <p>- тестовый сайт</p>
-                <p>- 6 новых фраз</p>
-               <p>- лимитированые скины убраны ( хэлуин )</p>
-                    <p>- протестируйте</p>
+                <h1>ОБНОВЛЕНИЕ 1.1.1 - наполненный аурой</h1>
+                <p>- коллоборация с смайлик кликером! ( его упоминание в тг )</p>
+                <p>- Ауры!</p>
+                <p>- 10+ новых скинов</p>
+                <p>- 20+ новых фраз</p>
+               <p>- новые 4 достижения</p>
+                    <p>- 4 новых кода</p>
+                    <p>звуки при клике</p>
+                    <p>казино! ( в магазине где улучшения в самом низу )</p>
                 
                 <div class="interface-container">
                     <div class="level-info">
@@ -67,6 +74,7 @@
                 <h1>ИНФО ЛИСТ</h1>
                 <p>Телеграм: t.me/grohostrelclicker</p>
                 <p>вавлылдпыдвдтмлтлытлш срашно тебе?!</p>
+                 <p>ДЕНЬ ВАЛЕНТИНА СОБЫТИЕ!</p>
             </div>
         </div>
 
@@ -103,6 +111,7 @@
             <button class="shop-tab active" onclick="openShopTab('upgrades')">Улучшения</button>
             <button class="shop-tab" onclick="openShopTab('cases')">Кейсы</button>
             <button class="shop-tab" onclick="openShopTab('items')">Предметы</button>
+            <button class="shop-tab" onclick="openShopTab('auras')">Ауры</button>
         </div>
 
         <div id="upgrades-tab" class="shop-content active">
@@ -235,7 +244,7 @@
             </button>
              <button class="upgrade-item" onclick="buyUpgrade(6666666678888, 63000000000000000000, 190)" data-level="175">
                 <strong>+6666666678888 на клик</strong><br>
-                Цена: <span> 63000000000000000000</span> капель<br>
+                Цена: <span>63000000000000000000</span> капель<br>
                 <span class="level-requirement">Требуется уровень: 190</span>
             </button>
 
@@ -403,6 +412,13 @@
                 Цена: 10000 солнц<br>
                 <span class="level-requirement">Требуется уровень: 121</span>
             </button>
+            <button class="upgrade-item" onclick="CASINO()">
+                 <strong>СЫГРАТЬ В КАЗИнО! ( капли: 1 )</strong>
+                 <br>
+                50%: потерять 75% от своего<br>
+                <br>
+                50%: получить 1.75 от всего<br>
+            </button>
         </div>
 
         <div id="cases-tab" class="shop-content">
@@ -420,9 +436,9 @@
                 </div>
             </button>
             
-            <button class="upgrade-item" onclick="buyPowerCase()" data-price="500000000" data-currency="drops">
+            <button class="upgrade-item" onclick="buyPowerCase()" data-price="100000" data-currency="drops">
                 <strong>Кейс 2.0</strong><br>
-                Цена: <span class="price-display">500000000</span> капель<br>
+                Цена: <span class="price-display">100000</span> капель<br>
                 <div style="font-size: 12px; margin-top: 5px;">
                     Шансы:<br>
                     <span style="color: #27ae60">70% - Обычный</span><br>
@@ -431,6 +447,19 @@
                     <span style="color: #f39c12">1.5% - Легендарный</span><br>
                     <span style="color: #e74c3c">0.997% - Мифический</span><br>
                     <span style="color: #ff00ff">0.003% - ГОРОХНЫЙ</span>
+                </div>
+            </button>
+            <button class="upgrade-item" onclick="buySmileCase()" data-price="5500" data-currency="drops">
+                <strong>Кейс смайла</strong><br>
+                Цена: <span class="price-display">100000</span> капель<br>
+                <div style="font-size: 12px; margin-top: 5px;">
+                    Шансы:<br>
+                    <span style="color: #27ae60">60% - Обычный</span><br>
+                    <span style="color: #3498db">30% - Редкий</span><br>
+                    <span style="color: #9b59b6">5% - Эпический</span><br>
+                    <span style="color: #f39c12">4.9% - Легендарный</span><br>
+                    <span style="color: #e74c3c">0.099% - Мифический</span><br>
+                    <span style="color: #fffb00">0.001% - СМАЙЛ</span>
                 </div>
             </button>
         </div>
@@ -497,12 +526,62 @@
                 <span style="font-size: 12px;">На 20 сек ×15 капель за клик</span><br>
                 <span class="level-requirement">Требуется уровень: 142</span>
             </button>
+             <button class="upgrade-item" onclick="buyItem('smle')" data-level="14" data-price="100" data-currency="suns">
+                <strong>амулет растения</strong><br>
+                Цена: <span class="price-display">100</span> солнц<br>
+                <span style="font-size: 12px;">магазин даёт за товар на 100% больше на 3 мин</span><br>
+                <span class="level-requirement">Требуется уровень: 14</span>
+            </button>
           
              <button class="upgrade-item" onclick="buyItem('???')" data-level="350" data-price="2250" data-currency="suns">
                 <strong>???</strong><br>
                 Цена: <span class="price-display">2250</span> солнц<br>
                 <span style="font-size: 12px;">ч...что это?</span><br>
                 <span class="level-requirement">Требуется уровень: 350</span>
+            </button>
+        </div>
+         
+        <div id="auras-tab" class="shop-content">
+            <button class="upgrade-item" onclick="buyAura('gold')" data-level="1" data-price="100000" data-currency="drops">
+                <strong>Аура золота</strong><br>
+                Цена: <span class="price-display">100000</span> капель<br>
+                <span style="font-size: 12px;">получайте на 10% больше капель, но авто-кликер на 20% меньше и солнц 5% меньше</span><br>
+                <span class="level-requirement">Требуется уровень: 50</span>
+            </button>
+            
+            <button class="upgrade-item" onclick="buyAura('gold2')" data-level="3" data-price="30000000" data-currency="drops">
+                <strong>Аура золота 2 уровень</strong><br>
+                Цена: <span class="price-display">30000000</span> капель<br>
+                <span style="font-size: 12px;">получайте на 15% больше капель, авто-кликера на 25% меньше и солнц 2.5% меньше</span><br>
+                <span class="level-requirement">Требуется уровень: 100</span>
+            </button>
+            
+            <button class="upgrade-item" onclick="buyAura('len')" data-level="2" data-price="2500000" data-currency="drops">
+                <strong>Аура спокойствия</strong><br>
+                Цена: <span class="price-display">2500000</span> капель<br>
+                <span style="font-size: 12px;">получайте на 300% ЗА АВТО КЛИК!!! но на 99.9% меньше капель и 100% солнц</span><br>
+                <span class="level-requirement">Требуется уровень: 100</span>
+            </button>
+            
+            <button class="upgrade-item" onclick="buyAura('fotoson')" data-level="1" data-price="1000000" data-currency="drops">
+                <strong>Аура фотосинтеза</strong><br>
+                Цена: <span class="price-display">1000000</span> капель<br>
+                <span style="font-size: 12px;">получайте на 0.01 солнц больше, но на 10% меньше от авто-клика</span><br>
+                <span class="level-requirement">Требуется уровень: 50</span>
+            </button>
+            
+            <button class="upgrade-item" onclick="buyAura('fotoson2')" data-level="5" data-price="50000000" data-currency="drops">
+                <strong>Аура фотосинтеза 2.0</strong><br>
+                Цена: <span class="price-display">50000000</span> капель<br>
+                <span style="font-size: 12px;">получайте на 0.03 солнц больше и не каких дебафов</span><br>
+                <span class="level-requirement">Требуется уровень: 100
+
+                </span>
+            </button>
+            
+            <button class="upgrade-item" onclick="removeAura()" style="background: #e74c3c; color: white;">
+                <strong>Снять ауру</strong><br>
+                <span style="font-size: 12px;">Убрать все эффекты аур</span>
             </button>
         </div>
     </div>
@@ -561,43 +640,28 @@
             <p><strong>Орех</strong> - даёт +3% к клику</p>
             <p><strong>Чомпер</strong> - даёт 8% скидки в магазине</p>
             <p><strong>Картошка-мина</strong> - периодически даёт бонусные капли</p>
-            <p><strong>Чеснок</strong> - автоматически покупает улучшения</p>
+            <p><strong>Вишни</strong> - автоматически покупает улучшения</p>
             <p><strong>Тройной Подсолнух</strong> - даёт +0.03 солнц на клик</p>
             <p><strong>Капуста</strong> - даёт скидку на предметы в магазине</p>
             <p><strong>Мрачная Роза</strong> - улучшенный автопокупщик</p>
-            <p><strong>Первобытный Подсолнух</strong> - легендарная сила с периодическими бонусами солнц</p>
+            <p><strong>Первобытный Подсолнух</strong> - легендарная сила с периодическими бонусами солнц +0.05 солнц к клику и что-то солнечное!</p>
             
-            <h3>ВАЛЮТЫ:</h3>
-            <p><strong>Капли</strong> - основная валюта, зарабатывается кликами</p>
-            <p><strong>Солнца</strong> - премиум валюта, дает доступ к особым предметам</p>
-            <p><strong>Опыт (EXP)</strong> - повышает ваш уровень</p>
+           
             
             <h3>РЕДКОСТИ СКИНОВ:</h3>
-            <p><span style="color: #27ae60">Обычный</span> - 59.945% шанс</p>
-            <p><span style="color: #3498db">Редкий</span> - 30% шанс</p>
-            <p><span style="color: #9b59b6">Эпический</span> - 8.6% шанс</p>
-            <p><span style="color: #f39c12">Легендарный</span> - 1% шанс</p>
-            <p><span style="color: #e74c3c">Мифический</span> - 0.4% шанс</p>
-            <p><span style="color: #ff00ff">ГОРОХНЫЙ</span> - 0.055% шанс</p>
+            <p><span style="color: #27ae60">Обычный</span> 
+            <p><span style="color: #3498db">Редкий</span> 
+            <p><span style="color: #9b59b6">Эпический</span> 
+            <p><span style="color: #f39c12">Легендарный</span>
+            <p><span style="color: #e74c3c">Мифический</span>
+            <p><span style="color: #ff00ff">ГОРОХНЫЙ</span>
+                      <p><span style="color: #f6ff00">смайл</span>
             
             <h3>СИСТЕМА УРОВНЕЙ:</h3>
             <p>• Каждый уровень увеличивает требования к опыту на 4%</p>
-            <p>• Некоторые улучшения требуют определенного уровня</p>
             <p>• Уровень влияет на доступность контента</p>
             
-            <h3>БУСТЫ:</h3>
-            <p>• Бусты действуют ограниченное время</p>
-            <p>• Можно активировать несколько разных бустов одновременно</p>
-            <p>• Бусты покупаются за солнца</p>
-            
-            <h3>КЕЙСЫ:</h3>
-            <p><strong>Обычный кейс</strong> - шанс получить скин любой редкости</p>
-            <p><strong>Кейс 2.0</strong> - улучшенные шансы на редкие скины</p>
-            
-            <h3>АМУЛЕТЫ:</h3>
-            <p>• Дают случайные силы растений</p>
-            <p>• Цена увеличивается после каждой покупки</p>
-            <p>• Силы можно экипировать для постоянных бонусов</p>
+        
         </div>
 
         <div id="achievements-tab" class="other-content">
@@ -643,6 +707,7 @@
                 <p>Ты теперь знаешь зачем это всё?</p>
                 <p id="gift-7">Не Получено</p>
             </div>
+            
             <div class="upgrade-item" id="achievement-8">
                 <img src="https://cdn1.ozone.ru/s3/multimedia-e/6192478334.jpg" class="IMG-1">
                 <strong>10 уровень!</strong><br>
@@ -667,6 +732,30 @@
                 <p>Играй 15 минут!</p>
                 <p id="gift-11">Не Получено</p>
             </div>
+             <div class="upgrade-item" id="achievement-12">
+                <img src="https://images.steamusercontent.com/ugc/10429792365288029781/668FC1D721B493C0B258CAFAAA7FB227F07E72D5/?imw=512&amp;imh=341&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=true" class="IMG-1">
+                <strong>теперь играть в эмоции!</strong><br>
+                <p>знаешь... слишком много напоминания О ЧЁРТОВОМ СМАЙЛЕ</p>
+                <p id="gift-12">Не Получено</p>
+            </div>
+             <div class="upgrade-item" id="achievement-13">
+                <img src="https://images.steamusercontent.com/ugc/10429792365288029781/668FC1D721B493C0B258CAFAAA7FB227F07E72D5/?imw=512&amp;imh=341&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=true" class="IMG-1">
+                <strong>100 для клика!</strong><br>
+                <p>О +100 на клик, это начало которое можно развить кликая или едя табуретку</p>
+                <p id="gift-13">Не Получено</p>
+            </div>
+             <div class="upgrade-item" id="achievement-14">
+                <img src="https://images.steamusercontent.com/ugc/10429792365288029781/668FC1D721B493C0B258CAFAAA7FB227F07E72D5/?imw=512&amp;imh=341&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=true" class="IMG-1">
+                <strong>10000 для клика!!!</strong><br>
+                <p>1000000 прыжков!</p>
+                <p id="gift-14">Не Получено</p>
+            </div>
+             <div class="upgrade-item" id="achievement-15">
+                <img src="https://images.steamusercontent.com/ugc/10429792365288029781/668FC1D721B493C0B258CAFAAA7FB227F07E72D5/?imw=512&amp;imh=341&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=true" class="IMG-1">
+                <strong>сутки...</strong><br>
+                <p>ты... играешь уже суммарно 1 день...иебе норм?</p>
+                <p id="gift-15">Не Получено</p>
+            </div>
         </div>
 
         <div id="codes-tab" class="other-content">
@@ -683,11 +772,17 @@
             <p id="code-result" style="margin-top: 10px;"></p>
             <div style="margin-top: 20px;">
                 <h4>Доступные коды:</h4>
-       
-              
+                <p><strong>HI</strong> - 100 капель</p>
+                <p><strong>2026</strong> - 2026 капель</p>
+                <p><strong>PVZ</strong> - 10000 капель + 10 солнц</p>
+                <p><strong>ILOVECLICK</strong> - 2500 капель</p>
+                <p><strong>ONLYMYGOODSUNANDMYBOOMTORIGHT</strong> - 25 солнц</p>
+                <p><strong>IAMSTEVE</strong> - 15000 капель</p>
+                <p><strong>1057</strong> - Секретный скин (только один раз!)</p>
             </div>
         </div>
     </div>
+    <button onclick="DELET">УНИЧТОЖЕНИЕ!</button>
 
     <div id="notification" class="notification"></div>
     <div id="overlay" class="overlay" onclick="closeAllPanels()"></div>
