@@ -14,10 +14,39 @@ body {
     -ms-user-select: none;
     user-select: none;
     min-height: 100vh;
-    background: white;
+    background: rgb(255, 255, 255);
     overflow-x: hidden;
     touch-action: manipulation;
     font-family: Arial, sans-serif;
+}
+
+/* Стили для аур */
+body.gold-aura {
+    background: rgb(226, 242, 222);
+}
+
+body.gold-aura header {
+    background: gold;
+}
+
+body.gold-aura #button {
+    border-color: gold;
+}
+
+body.fotoson-aura #button {
+    border-color: rgb(153, 255, 0);
+}
+
+body.len-aura #button {
+    border-color: #4a73da;
+}
+
+body.len-aura .equipped-power {
+    border-color: #4a73da;
+}
+
+body.len-aura #button:active {
+    transform: translateY(-200px) scale(0.68);
 }
 
 .main-content {
@@ -943,6 +972,8 @@ a[href="why.html"]:hover {
     #inventory-panel {
         max-width: 90vw;
         padding: 20px;
+        max-height: 80vh;
+        top: 10vh;
     }
     
     /* Кнопки интерфейса на мобильных */
