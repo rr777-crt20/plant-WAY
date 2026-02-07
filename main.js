@@ -868,7 +868,7 @@ function checkAchievements() {
     
     if (!unlockedAchievements.play1day && gameStartTime) {
         const playTime = Date.now() - gameStartTime;
-        if (playTime >= 24 * 60 * 60 * 1000) {
+        if (playTime >= 24 * 60 * 60 * 60 * 1000) {
             unlockedAchievements.play1day = true;
             score += 1000000000000000;
             sunScore += 2000;
