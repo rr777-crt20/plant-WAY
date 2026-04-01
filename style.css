@@ -1,4 +1,4 @@
-/* Основные стили */
+/* 
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -7,6 +7,7 @@
 body {
     margin: 0;
     padding: 0;
+*/
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -20,7 +21,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Стили для аур */
+
 body.gold-aura {
     background: rgb(226, 242, 222);
 }
@@ -1304,3 +1305,4 @@ a[href="why.html"]:hover {
         left: 80px;
     }
 }
+*/
